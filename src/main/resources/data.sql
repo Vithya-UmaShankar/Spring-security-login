@@ -1,0 +1,2 @@
+#INSERT INTO `account` (`id`, `account_type`, `account_status`, `is_internal`, `name`, `description`, `time_created`, `time_updated`) VALUES ("04931760-9b16-11ec-be7e-9829a6367f67", 'BASIC', 'ACTIVE', 'y', 'CompanyA', 'Description for CompanyA', now(), now());
+#INSERT INTO `account_owner` (`id`, `name`, `password`, `account_id`) VALUES (UUID(), "CompanyA", "$2a$10$CzQeYz54t2nkDoLBCwdpk.ODNgEiPvRWUIF33KzGkI5.BdVU7d/om", "04931760-9b16-11ec-be7e-9829a6367f67");

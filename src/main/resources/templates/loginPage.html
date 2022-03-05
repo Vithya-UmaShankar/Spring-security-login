@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	  	<title>Login</title>
+	  	<meta charset="utf-8">
+	  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	  	<link rel="stylesheet" href="custom.css">
+	</head>
+	<body>
+		<div class="jumbotron jumbotron-fluid">
+	  		<div class="container" style="height:5px">
+	  		</div>
+		</div>
+		<div class="container">
+  					<div class="row">
+  					<div class="col-sm-1">
+  					</div>
+  						<div class="col-sm-3">
+  							<div style="padding-top:12px;">
+  							<a class="btn btn-block btn-social btn-facebook customBtn" th:href="@{/oauth2/authorization/facebook}">
+    							<span class="fa fa-facebook width42px"></span> Sign in with Facebook
+  							</a>
+  							
+  							<a class="btn btn-block btn-social btn-google customBtn" th:href="@{/oauth2/authorization/google}">
+    							<span class="fa fa-google width42px"></span> Sign in with Google
+  							</a>
+  						</div>
+
+  						</div>
+  						<div class="col-sm-1">
+  						<hr>
+  						</div>
+  						<div class="col-sm-5">
+  						<div style="padding-top:15px;">  												
+							
+							<div class="alert alert-info alert-dismissible" id="tokenRegenerated" th:if="${(param.tokenRegenerated != null) and (param.tokenRegenerated[0] == 'true')}">
+							
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								Token Generated. Check your mail for activation link
+							</div>
+							
+							<div class="alert alert-danger alert-dismissible" id="errors" th:if="${(param.error != null) and (param.error[0] == 'true')}">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								Access Denied
+							</div>
+
+							<div class="alert alert-danger alert-dismissible" id="badCred" th:if="${(param.badCred != null) and (param.badCred[0] == 'true')}">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								Invalid Email/Password
+							</div>
+
+							<div class="alert alert-danger alert-dismissible" id="disabledUser" th:if="${(param.userDisabled != null) and (param.userDisabled[0] == 'true')}">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								User isn't verified. Check your email for activation link
+							</div>
+
+							<div class="alert alert-danger alert-dismissible" id="emailExists" th:if="${(param.emailExists != null) and (param.emailExists[0] == 'true')}">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								User with this email is already registered. Try logging in
+							</div>
+      
+							<div th:if="${errorMessage}" th:utext="${errorMessage}" style="color:red;font-style:italic;">
+								 ...
+							</div>
+
+							<form th:action="@{/loginCheck}" method='POST'>
+	  							 <div class="form-group">
+								    <label for="emailTxt">Email:</label>
+								    <input type="text" class="form-control" id="emailTxt" name="email" autofocus>
+								  </div>
+								  <div class="form-group">
+								    <label for="pwd">Password:</label>
+								    <input type="password" class="form-control" id="pwd" name="password">
+								  </div>
+								  <div class="d-flex justify-content-between mb-3">
+								    <div class="p-2"><a href="/signup"><button type="button" class="btn btn-success">Create New Account</button></a></div>
+								    <div class="p-2"></div>
+								    <div class="p-2"><button type="submit" name="submit" class="btn btn-info">Sigin in</button></div>
+								  </div>
+							  </form>
+  						</div>
+  						<div class="col-sm-2">
+  						</div>
+					</div>
+  				</div>
+		</div>
+	</body>
+</html>

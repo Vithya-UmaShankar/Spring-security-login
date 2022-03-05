@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	  	<title>Login</title>
+	  	<meta charset="utf-8">
+	  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+	  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	  	<link rel="stylesheet" href="custom.css">
+	</head>
+	<body>
+		<div class="jumbotron jumbotron-fluid">
+	  		<div class="container" style="height:15px">
+					<div class="row">
+						<div class="col-sm-3">
+						</div>
+						<div class="col-sm-6">
+							Hi <span th:utext="${Name}"></span> <br>
+							<a href="/logout"> Logout </a>
+						</div>
+						<div class="col-sm-3">
+						</div>
+					</div>
+	  		</div>
+		</div>
+		<div class="container">
+			<div class="row">
+  			<div class="col-sm-5">
+				<h3> Groups you are a part of </h3>
+				<table id="example" class="table table-bordered" style="width: 100%">
+					<thead>
+					<tr>
+						<th>Name</th>
+						<th>Actions</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="user_userGroup : ${user_userGroups}">
+						<td  th:text="${user_userGroup}"></td>
+						<td><a th:href="@{'/api/v1/userGroup/removeUser/' + ${user_userGroup}}" class="btn btn-primary" style="background-color: grey; border:none;">Leave</a></td>
+					</tr>
+					</tbody>
+				</table>
+  			</div>
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-5">
+				<h3> Groups available </h3>
+				<table id="example" class="table table-bordered" style="width: 100%">
+					<thead>
+					<tr>
+						<th>Name</th>
+						<th>Actions</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="allUserGroup : ${all_UserGroups}">
+						<td  th:text="${allUserGroup}"></td>
+						<td>
+							<div sec:authorize="hasAuthority('USER')">
+								<a class="btn btn-primary"  th:href="@{'/api/v1/userGroup/addUser/' + ${allUserGroup}}" style="background-color: grey; border:none;">Join</a>
+							</div>
+							<div sec:authorize="hasAuthority('ADMIN')">
+								<a th:href="@{'/api/v1/userGroup/addUser/' + ${allUserGroup}}" class="btn btn-primary" style="background-color: grey; border:none;">Join</a>
+								<a th:href="@{'/api/v1/userGroup/removeGroup/' + ${allUserGroup}}" class="btn btn-primary" style="background-color: grey; border:none;">Delete</a>
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<div>
+					Create a new group
+					<input type="text" id="newGroupName" />
+					<a class="btn btn-primary" id="createNewGroup"> Create </a>
+				</div>
+			</div>
+  		</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#newGroupName").change(function(e) {
+				$("#createNewGroup").attr("href", "/api/v1/userGroup/addUser/" + $("#newGroupName").val());
+			});
+		});
+	</script>
+</html>
