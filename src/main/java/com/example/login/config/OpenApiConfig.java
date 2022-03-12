@@ -21,6 +21,6 @@ public class OpenApiConfig {
         .components(new Components())
         .info(new Info()
             .title("Title - Spring Boot Swagger Configuration")
-            .description("\"Swagger configuration for application \""));
+            .description("Swagger configuration for application"));
   }
 }
