@@ -97,6 +97,10 @@ public class UserGroupService {
       for (User user : userList) {
         deleteUserGroupFromUser(user.getContactEmail(), userGroup.getGroupName());
       }
+      List<Event> eventList = eventRepository.findByGroupId(userGroup);
+      for(Event event: eventList){
+        deleteChildEvents(event);
+      }
 
       userGroupRepository.deleteById(userGroup.getId());
     } else {
@@ -296,7 +300,9 @@ public class UserGroupService {
 
   private void deleteChildEvents(Event event) {
     if (event.getChildEvents().isEmpty()) {
-      deleteEvent(event);
+      if(eventRepository.existsById(event.getId())) {
+        deleteEvent(event);
+      }
     }
     else {
       for(Event e: event.getChildEvents()) {
