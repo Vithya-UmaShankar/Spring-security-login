@@ -290,11 +290,18 @@ public class UserGroupService {
    * @return Returns the updated Event
    */
   public void deleteHostedEventInGroup(UUID groupId, UUID hostedEventId) {
-    if(eventRepository.existsById(hostedEventId)){
-      Event event = eventRepository.findById(hostedEventId).get();
+    if (! userGroupRepository.existsById(groupId)) {
+      throw new ResourceNotFoundException("Group with id [" + groupId + "] not found");
+    }
+    if(! eventRepository.existsById(hostedEventId)){
+      throw new ResourceNotFoundException("Event with id [" + hostedEventId + "] not found");
+    }
+    UserGroup userGroup = userGroupRepository.findUserGroupById(groupId);
+    Event event = eventRepository.findById(hostedEventId).get();
+    if(event.getGroupId().equals(userGroup)) {
       deleteChildEvents(event);
     }else{
-      throw new ResourceNotFoundException("Event with id [" + hostedEventId + "] not found");
+      throw new ResourceNotFoundException("Event with id [" + hostedEventId + "] not found in Group [" + groupId + "]");
     }
   }
 
