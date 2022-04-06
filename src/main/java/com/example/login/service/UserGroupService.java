@@ -300,27 +300,23 @@ public class UserGroupService {
 
   private void deleteChildEvents(Event event) {
     if (event.getChildEvents().isEmpty()) {
-      if(eventRepository.existsById(event.getId())) {
-        deleteEvent(event);
-      }
+      deleteEvent(event);
     }
     else {
       for(Event e: event.getChildEvents()) {
         deleteChildEvents(e);
-        if(eventRepository.existsById(e.getId())) {
-          deleteEvent(e);
-        }
+        deleteEvent(e);
       }
-      if(eventRepository.existsById(event.getId())) {
-        deleteEvent(event);
-      }
+      deleteEvent(event);
     }
   }
 
   public void deleteEvent(Event event){
-    event.setGroupId(null);
-    event.setParentEvent(null);
-    eventRepository.deleteById(event.getId());
+    if(eventRepository.existsById(event.getId())) {
+      event.setGroupId(null);
+      event.setParentEvent(null);
+      eventRepository.deleteById(event.getId());
+    }
   }
 
   /**
